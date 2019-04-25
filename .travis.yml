@@ -9,7 +9,7 @@ install:
   - pip install -r requirements_dev.txt
   - pip install -e .
 script:
-  - pytest --cov=warg --ignore=tests/test_toaster.py
+  - pytest --cov=munin
   - coveralls
-  - black --check warg
+  - black --check munin
 
