@@ -4,3 +4,6 @@ warg
 pytest==4.4.1
 python-markdown-math
 matplotlib
+jinja2
+pyqrcode
+pdfkit
