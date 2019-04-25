@@ -3,3 +3,4 @@ six==1.12.0
 warg
 pytest==4.4.1
 python-markdown-math
+matplotlib
