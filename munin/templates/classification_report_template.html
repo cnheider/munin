@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css'>
+    <script type='text/javascript'
+            src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+    <style>
+      .boxes {
+        table-layout: fixed;
+        width: 100%;
+        border-spacing: 6px;
+        border-collapse: separate;
+      }
+
+      .boxes td {
+        vertical-align: top;
+        border: 1px dashed #bcbcbc;
+        padding: 6px;
+        overflow-x: auto;
+      }
+    </style>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <h1 class='animated fadeIn'>{{ title }}</h1>
+
+    <h2 class='animated fadeIn'>Confusion matrix:</h2>
+    {{confusion_matrix | safe}}
+
+    <h2 class='animated fadeIn'>Metrics:</h2>
+    <table>
+
+      {% for metric_name,metric_equation,metric_value, mean_value in metrics %}
+      <tr>
+        <td>
+          <b>{{metric_name}}</b>
+        </td>
+        <td>
+          {{metric_equation | safe}}
+        </td>
+        <td>
+          <i>{{metric_value}}</i>
+        </td>
+        <td>
+           <b>{{mean_value}}</b>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <h2 class='animated fadeIn'>Predictions:</h2>
+    <table class='boxes'>
+      {% for row in entries %}
+      <tr>
+        {% for item in row %}
+        <td>
+          <h3>{{item.name}}</h3>
+          {{item.figure | safe}}
+          <br/>
+          <i>prediction: {{item.prediction}}</i>
+          <br/>
+          <b>truth: {{item.truth}}</b>
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
