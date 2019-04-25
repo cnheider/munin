@@ -111,5 +111,5 @@ if __name__ == '__main__':
 
   file_name = title.lower().replace(" ", "_")
 
-  generate_html(file_name, template_path, **bundle)
+  generate_html(file_name, **bundle)
   generate_pdf(file_name)
