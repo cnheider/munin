@@ -1,6 +1,6 @@
 # Munin
-```Old Norse: Muninn
-    Odin's raven
+```
+Old Norse: Muninn
 ``` 
 
 ![munin](.github/images/munin.svg) ![munin](.github/images/python.svg)
