@@ -10,4 +10,4 @@ ___
 > Reporting.
 ___
 
-This package is a package for generating classification reports. 
+This package is a package for generating classification reports. Uses jinja2 templates, see documentation.
