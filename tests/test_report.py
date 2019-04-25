@@ -19,7 +19,7 @@ __author__ = "cnheider"
 __doc__ = ""
 
 
-def test_generation():
+def test_generation(do_generate_pdf=False):
     data_path = pathlib.Path.home()
 
     num_classes = 3
@@ -82,8 +82,9 @@ def test_generation():
     file_name = title.lower().replace(" ", "_")
 
     generate_html(file_name, **bundle)
-    generate_pdf(file_name)
+    if do_generate_pdf:
+        generate_pdf(file_name)
 
 
 if __name__ == "__main__":
-    test_generation()
+    test_generation(True)
