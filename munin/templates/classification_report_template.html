@@ -2,6 +2,29 @@
 <html lang='en'>
   <head>
     <meta charset='UTF-8'>
+    <!-- Styles
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" />
+<script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+<link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+
+<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+
+<link rel="stylesheet" href="https://rawgit.com/outboxcraft/beauter/master/beauter.min.css>
+<script src="https://rawgit.com/outboxcraft/beauter/master/beauter.min.js">
+
+    -->
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css'>
     <script type='text/javascript'
@@ -25,31 +48,53 @@
   </head>
   <body>
     <h1 class='animated fadeIn'>{{ title }}</h1>
+    <h2 class='animated fadeIn'>Model: {{model_name}}</h2>
 
+
+    {% if confusion_matrix: %}
     <h2 class='animated fadeIn'>Confusion matrix:</h2>
     {{confusion_matrix | safe}}
+    {% endif %}
 
+    {% if metrics: %}
     <h2 class='animated fadeIn'>Metrics:</h2>
     <table>
-
+      <thead>
+        <tr>
+          <th>
+            Metric
+          </th>
+          <th>
+            Equation
+          </th>
+          <th>
+            Values
+          </th>
+          <th>
+            Aggregated
+          </th>
+        </tr>
+      </thead>
       {% for metric_name,metric_equation,metric_value, mean_value in metrics %}
       <tr>
         <td>
-          <b>{{metric_name}}</b>
+          <p>{{metric_name}}</p>
         </td>
         <td>
           {{metric_equation | safe}}
         </td>
         <td>
-          <i>{{metric_value}}</i>
+          <p>{{metric_value}}</p>
         </td>
         <td>
-           <b>{{mean_value}}</b>
+          <p>{{mean_value}}</p>
         </td>
       </tr>
       {% endfor %}
     </table>
+    {% endif %}
 
+    {% if entries: %}
     <h2 class='animated fadeIn'>Predictions:</h2>
     <table class='boxes'>
       {% for row in entries %}
@@ -67,5 +112,6 @@
       </tr>
       {% endfor %}
     </table>
+    {% endif %}
   </body>
 </html>

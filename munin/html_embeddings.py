@@ -13,19 +13,19 @@ import matplotlib.pyplot as plt
 def generate_math_html(equation="e^x", inline=True):
     """
 
-  For inline math, use \(...\).
-  For standalone math, use $$...$$, \[...\] or \begin...\end.
-  md = markdown.Markdown(extensions=['mdx_math'])
-  md.convert('$$e^x$$')
+For inline math, use \(...\).
+For standalone math, use $$...$$, \[...\] or \begin...\end.
+md = markdown.Markdown(extensions=['mdx_math'])
+md.convert('$$e^x$$')
 
-  :param equation:
-  :param inline:
-  :return:
-  """
+:param equation:
+:param inline:
+:return:
+"""
     md = markdown.Markdown(extensions=["mdx_math"], extension_configs={"mdx_math": {"add_preview": True}})
     if inline:
         stripped = md.convert(f"\({equation}\)").lstrip("<p>").rstrip("</p>")
-        return f"<{stripped}"
+        return f"<{stripped}>"
     return md.convert(f"$${equation}$$")
 
 
@@ -70,9 +70,9 @@ def plot_cf(y_pred, y_test, class_names, size=(8, 8), decimals=3):
 
     def plot_confusion_matrix(y_true, y_pred, classes, normalize=False, title=None, cmap=plt.cm.Blues):
         """
-    This function prints and plots the confusion matrix.
-    Normalization can be applied by setting `normalize=True`.
-    """
+This function prints and plots the confusion matrix.
+Normalization can be applied by setting `normalize=True`.
+"""
         if not title:
             if normalize:
                 title = "Normalized confusion matrix"
@@ -82,7 +82,8 @@ def plot_cf(y_pred, y_test, class_names, size=(8, 8), decimals=3):
         # Compute confusion matrix
         cm = confusion_matrix(y_true, y_pred)
         # Only use the labels that appear in the data
-        classes = classes[unique_labels(y_true, y_pred)]
+        unique = unique_labels(y_true, y_pred)
+        classes = classes[unique]
         if normalize:
             cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
 
