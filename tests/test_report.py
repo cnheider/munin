@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
 import pathlib
 
 import matplotlib.pyplot as plt
 from warg import NOD
 
-from munin.html_embeddings import plt_html_svg
+from munin.utilities.html_embeddings import plt_html_svg
 
 plt.rcParams["figure.figsize"] = (3, 3)
 import numpy as np
 
 from munin.generate_report import generate_pdf, generate_html, ReportEntry
-from munin.html_embeddings import generate_math_html, plot_cf, plt_html
+from munin.utilities.html_embeddings import generate_math_html, plot_cf, plt_html
 
 __author__ = "cnheider"
 __doc__ = ""

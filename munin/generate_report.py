@@ -4,28 +4,22 @@ import os
 import pathlib
 from collections import namedtuple
 
-import markdown
-import matplotlib.pyplot as plt
-
-from munin.html_embeddings import plot_cf, plt_html, plt_html_svg, generate_math_html
-from warg import NOD
-
-plt.rcParams["figure.figsize"] = (3, 3)
 import numpy as np
 
-ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth"))
+from munin.utilities.html_embeddings import generate_math_html, plot_cf, plt_html, plt_html_svg
+
+ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome"))
 
 __author__ = "cnheider"
 __doc__ = ""
 
 
-def generate_html(file_name, **kwargs):
+def generate_html(file_name, template_page="classification_report_template.html", **kwargs):
     template_path = os.path.join(os.path.dirname(__file__), "templates")
     from jinja2 import Environment, select_autoescape, FileSystemLoader
 
     env = Environment(loader=FileSystemLoader(template_path), autoescape=select_autoescape(["html", "xml"]))
-
-    template = env.get_template("classification_report_template.html")
+    template = env.get_template(template_page)
     with open(f"{file_name}.html", "w") as f:
         f.writelines(template.render(**kwargs))
 
@@ -38,30 +32,51 @@ def generate_pdf(file_name):
 
 if __name__ == "__main__":
 
+    import matplotlib.pyplot as plt
+
+    plt.rcParams["figure.figsize"] = (3, 3)
+    from warg import NOD
+
     data_path = pathlib.Path.home()
     num_classes = 3
     cell_width = (800 / num_classes) - 6 - 6 * 2
 
     plt.plot(np.random.random((3, 3)))
 
-    a = ReportEntry(name=1, figure=plt_html_svg(size=[cell_width, cell_width]), prediction="a", truth="b")
+    a = ReportEntry(
+        name=1, figure=plt_html_svg(size=[cell_width, cell_width]), prediction="a", truth="b", outcome="fp"
+    )
 
     plt.plot(np.ones((9, 3)))
 
     b = ReportEntry(
-        name=2, figure=plt_html(format="svg", size=[cell_width, cell_width]), prediction="b", truth="c"
+        name=2,
+        figure=plt_html(format="svg", size=[cell_width, cell_width]),
+        prediction="b",
+        truth="c",
+        outcome="fp",
     )
 
     plt.plot(np.ones((5, 6)))
 
-    c = ReportEntry(name=3, figure=plt_html(size=[cell_width, cell_width]), prediction="a", truth="a")
+    c = ReportEntry(
+        name=3, figure=plt_html(size=[cell_width, cell_width]), prediction="a", truth="a", outcome="tp"
+    )
 
     d = ReportEntry(
-        name="fas3", figure=plt_html(format="jpg", size=[cell_width, cell_width]), prediction="a", truth="a"
+        name="fas3",
+        figure=plt_html(format="jpg", size=[cell_width, cell_width]),
+        prediction="a",
+        truth="a",
+        outcome="tp",
     )
 
     e = ReportEntry(
-        name="fas3", figure=plt_html(format="jpeg", size=[cell_width, cell_width]), prediction="a", truth="a"
+        name="fas3",
+        figure=plt_html(format="jpeg", size=[cell_width, cell_width]),
+        prediction="c",
+        truth="c",
+        outcome="tn",
     )
 
     from sklearn import svm, datasets
@@ -85,7 +100,7 @@ if __name__ == "__main__":
 
     title = "Classification Report"
     confusion_matrix = plt_html(format="png", size=[800, 800])
-    entries = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
+    predictions = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
 
     accuracy = generate_math_html("\dfrac{tp+tn}{N}"), [4, 4, 5], 4.2
     precision = generate_math_html("\dfrac{tp}{tp+fp}"), [4, 4, 5], 4.2
@@ -94,9 +109,9 @@ if __name__ == "__main__":
     support = generate_math_html("N_{class_truth}"), [4, 4, 5], 6
     metrics = NOD.dict_of(accuracy, precision, f1_score, recall, support).as_flat_tuples()
 
-    bundle = NOD.dict_of(title, confusion_matrix, metrics, entries)
+    bundle = NOD.dict_of(title, confusion_matrix, metrics, predictions)
 
     file_name = title.lower().replace(" ", "_")
 
     generate_html(file_name, **bundle)
-    generate_pdf(file_name)
+    # generate_pdf(file_name)

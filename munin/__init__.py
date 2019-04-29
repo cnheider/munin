@@ -3,3 +3,5 @@
 
 
 __author__ = "cnheider"
+
+from .generate_report import generate_html, generate_pdf

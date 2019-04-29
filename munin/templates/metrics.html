@@ -1,0 +1,39 @@
+{% block metrics %}
+{% if metrics: %}
+<h2 class='animated fadeIn'>Metrics:</h2>
+<table>
+  <thead>
+    <tr>
+      <th>
+        Metric
+      </th>
+      <th>
+        Equation
+      </th>
+      <th>
+        Values
+      </th>
+      <th>
+        Aggregated
+      </th>
+    </tr>
+  </thead>
+  {% for metric_name,metric_equation,metric_value, mean_value in metrics %}
+  <tr>
+    <td>
+      <p>{{metric_name}}</p>
+    </td>
+    <td>
+      {{metric_equation | safe}}
+    </td>
+    <td>
+      <p>{{metric_value}}</p>
+    </td>
+    <td>
+      <p>{{mean_value}}</p>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

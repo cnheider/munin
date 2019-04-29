@@ -1,0 +1,7 @@
+{% block confusion_matrix %}
+{% if confusion_matrix: %}
+    <h2 class='animated fadeIn'>Confusion matrix:</h2>
+    {{confusion_matrix | safe}}
+    {% endif %}
+
+{% endblock %}

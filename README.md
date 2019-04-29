@@ -11,3 +11,25 @@ ___
 ___
 
 This package is a package for generating classification reports. Uses jinja2 templates, see documentation.
+
+# Quick Start
+
+```
+  pip install munin
+
+```
+
+Now you can add all your metrics and plots.
+
+```
+  from munin import generate_html
+  from warg import NOD
+  
+  ...
+
+  metrics = NOD.dict_of(accuracy, precision, f1_score, recall, support).as_flat_tuples()
+  
+  bundle = NOD.dict_of(title, confusion_matrix, metrics, predictions)
+  
+  generate_html(file_name, **bundle)
+```
