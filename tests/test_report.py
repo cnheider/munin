@@ -26,24 +26,40 @@ def test_generation(do_generate_pdf=False):
 
     plt.plot(np.random.random((3, 3)))
 
-    a = ReportEntry(name=1, figure=plt_html_svg(size=[cell_width, cell_width]), prediction="a", truth="b")
+    a = ReportEntry(
+        name=1, figure=plt_html_svg(size=[cell_width, cell_width]), prediction="a", truth="b", outcome="fp"
+    )
 
     plt.plot(np.ones((9, 3)))
 
     b = ReportEntry(
-        name=2, figure=plt_html(format="svg", size=[cell_width, cell_width]), prediction="b", truth="c"
+        name=2,
+        figure=plt_html(format="svg", size=[cell_width, cell_width]),
+        prediction="b",
+        truth="c",
+        outcome="fp",
     )
 
     plt.plot(np.ones((5, 6)))
 
-    c = ReportEntry(name=3, figure=plt_html(size=[cell_width, cell_width]), prediction="a", truth="a")
+    c = ReportEntry(
+        name=3, figure=plt_html(size=[cell_width, cell_width]), prediction="a", truth="a", outcome="tp"
+    )
 
     d = ReportEntry(
-        name="fas3", figure=plt_html(format="jpg", size=[cell_width, cell_width]), prediction="a", truth="a"
+        name="fas3",
+        figure=plt_html(format="jpg", size=[cell_width, cell_width]),
+        prediction="a",
+        truth="a",
+        outcome="tp",
     )
 
     e = ReportEntry(
-        name="fas3", figure=plt_html(format="jpeg", size=[cell_width, cell_width]), prediction="a", truth="a"
+        name="fas3",
+        figure=plt_html(format="jpeg", size=[cell_width, cell_width]),
+        prediction="c",
+        truth="c",
+        outcome="tn",
     )
 
     from sklearn import svm, datasets
