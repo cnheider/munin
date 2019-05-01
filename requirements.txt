@@ -10,3 +10,4 @@ jinja2
 pyqrcode
 pdfkit
 scikit-learn
+sorcery
