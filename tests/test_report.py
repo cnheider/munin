@@ -15,7 +15,11 @@ from munin.generate_report import generate_pdf, generate_html, ReportEntry
 from munin.utilities.html_embeddings import generate_math_html, plot_cf, plt_html
 
 __author__ = "cnheider"
-__doc__ = ""
+__doc__ = """
+Created on 27/04/2019
+
+@author: cnheider
+"""
 
 
 def test_generation(do_generate_pdf=False):

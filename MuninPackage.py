@@ -2,7 +2,7 @@ import glob
 
 from setuptools import find_packages
 
-from version import get_version
+from munin.version import get_version
 
 
 class MuninPackage:

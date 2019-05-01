@@ -6,12 +6,17 @@ from collections import namedtuple
 
 import numpy as np
 
-from munin.utilities.html_embeddings import generate_math_html, plot_cf, plt_html, plt_html_svg
+from draugr import plot_cf
+from munin.utilities.html_embeddings import generate_math_html, plt_html, plt_html_svg
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome"))
 
 __author__ = "cnheider"
-__doc__ = ""
+__doc__ = """
+Created on 27/04/2019
+
+@author: cnheider
+"""
 
 
 def generate_html(file_name, template_page="classification_report_template.html", **kwargs):
