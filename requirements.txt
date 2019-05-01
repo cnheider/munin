@@ -11,3 +11,4 @@ pyqrcode
 pdfkit
 scikit-learn
 sorcery
+draugr
