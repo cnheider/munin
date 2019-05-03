@@ -61,8 +61,8 @@ class MuninPackage:
 
     @property
     def package_data(self):
-        data = glob.glob("munin/templates/**.html", recursive=True)
-        return {"munin": [*data]}
+        # data = glob.glob("munin/templates/**.html", recursive=True)
+        return {"munin": ["templates/*.html"]}
 
     @property
     def entry_points(self):

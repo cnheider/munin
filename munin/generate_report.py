@@ -21,6 +21,7 @@ Created on 27/04/2019
 
 def generate_html(file_name, template_page="classification_report_template.html", **kwargs):
     template_path = os.path.join(os.path.dirname(__file__), "templates")
+
     from jinja2 import Environment, select_autoescape, FileSystemLoader
 
     env = Environment(loader=FileSystemLoader(template_path), autoescape=select_autoescape(["html", "xml"]))
