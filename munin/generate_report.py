@@ -5,11 +5,14 @@ import pathlib
 from collections import namedtuple
 
 import numpy as np
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.preprocessing import label_binarize, LabelBinarizer
 
-from draugr import plot_cf
-from munin.utilities.html_embeddings import generate_math_html, plt_html, plt_html_svg
+import draugr
+from draugr import plot_confusion_matrix
+from munin.utilities.html_embeddings import generate_math_html, plt_html, plt_html_svg, generate_metrics
 
-ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome"))
+ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
 
 __author__ = "cnheider"
 __doc__ = """
@@ -19,8 +22,11 @@ Created on 27/04/2019
 """
 
 
-def generate_html(file_name, template_page="classification_report_template.html", **kwargs):
-    template_path = os.path.join(os.path.dirname(__file__), "templates")
+def generate_html(
+    file_name, template_page="classification_report_template.html", template_path=None, **kwargs
+):
+    if not template_path:
+        template_path = pathlib.Path.joinpath(os.path.dirname(__file__), "templates")
 
     from jinja2 import Environment, select_autoescape, FileSystemLoader
 
@@ -40,6 +46,7 @@ if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
 
+    do_generate_pdf = False
     plt.rcParams["figure.figsize"] = (3, 3)
     from warg import NOD
 
@@ -50,7 +57,12 @@ if __name__ == "__main__":
     plt.plot(np.random.random((3, 3)))
 
     a = ReportEntry(
-        name=1, figure=plt_html_svg(size=[cell_width, cell_width]), prediction="a", truth="b", outcome="fp"
+        name=1,
+        figure=plt_html_svg(size=[cell_width, cell_width]),
+        prediction="a",
+        truth="b",
+        outcome="fp",
+        explanation=None,
     )
 
     plt.plot(np.ones((9, 3)))
@@ -61,12 +73,18 @@ if __name__ == "__main__":
         prediction="b",
         truth="c",
         outcome="fp",
+        explanation=None,
     )
 
     plt.plot(np.ones((5, 6)))
 
     c = ReportEntry(
-        name=3, figure=plt_html(size=[cell_width, cell_width]), prediction="a", truth="a", outcome="tp"
+        name=3,
+        figure=plt_html(size=[cell_width, cell_width]),
+        prediction="a",
+        truth="a",
+        outcome="tp",
+        explanation=None,
     )
 
     d = ReportEntry(
@@ -75,6 +93,7 @@ if __name__ == "__main__":
         prediction="a",
         truth="a",
         outcome="tp",
+        explanation=None,
     )
 
     e = ReportEntry(
@@ -83,41 +102,46 @@ if __name__ == "__main__":
         prediction="c",
         truth="c",
         outcome="tn",
+        explanation=plt_html(format="svg", size=[cell_width, cell_width]),
     )
 
     from sklearn import svm, datasets
     from sklearn.model_selection import train_test_split
 
-    # import some data to play with
     iris = datasets.load_iris()
     X = iris.data
     y = iris.target
     class_names = iris.target_names
 
-    # Split the data into a training set and a test set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+    bina = LabelBinarizer()
+    y = bina.fit_transform(y)
+    n_classes = y.shape[1]
 
-    # Run classifier, using a model that is too regularized (C too low) to see
-    # the impact on the results
-    classifier = svm.SVC(kernel="linear", C=0.01)
-    y_pred = classifier.fit(X_train, y_train).predict(X_test)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=2)
 
-    plot_cf(y_pred, y_test, class_names)
+    classifier = OneVsRestClassifier(svm.SVC(kernel="linear", probability=True))
+    classifier.fit(X_train, y_train)
+    y_pred = classifier.predict(X_test)
+
+    y_p_max = y_pred.argmax(axis=-1)
+    y_t_max = y_test.argmax(axis=-1)
+
+    plot_confusion_matrix(y_t_max, y_p_max, class_names=class_names)
 
     title = "Classification Report"
     confusion_matrix = plt_html(format="png", size=[800, 800])
     predictions = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
 
-    accuracy = generate_math_html("\dfrac{tp+tn}{N}"), [4, 4, 5], 4.2
-    precision = generate_math_html("\dfrac{tp}{tp+fp}"), [4, 4, 5], 4.2
-    recall = generate_math_html("\dfrac{tp}{tp+fn}"), [4, 4, 5], 5
-    f1_score = generate_math_html("2*\dfrac{precision*recall}{precision+recall}"), [4, 4, 5], 4
-    support = generate_math_html("N_{class_truth}"), [4, 4, 5], 6
-    metrics = NOD.dict_of(accuracy, precision, f1_score, recall, support).as_flat_tuples()
+    metric_fields, metrics = generate_metrics(y_t_max, y_p_max, class_names)
 
-    bundle = NOD.dict_of(title, confusion_matrix, metrics, predictions)
+    draugr.roc_plot(y_pred, y_test, n_classes)
+
+    roc_figure = plt_html(format="png", size=[800, 800])
+
+    bundle = NOD.dict_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
 
     file_name = title.lower().replace(" ", "_")
 
     generate_html(file_name, **bundle)
-    # generate_pdf(file_name)
+    if do_generate_pdf:
+        generate_pdf(file_name)
