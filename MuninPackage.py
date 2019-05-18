@@ -1,11 +1,12 @@
 import glob
+import pathlib
 
 from setuptools import find_packages
 
 import os
 import re
 
-with open(pathlib.Path.joinpath(os.path.dirname(__file__), "munin/version.py"), "r") as f:
+with open(pathlib.Path(__file__).parent / "munin/version.py", "r") as f:
     # get version string from module
     version = re.search(r"__version__ = ['\"]([^'\"]*)['\"]", f.read(), re.M).group(1)
 
