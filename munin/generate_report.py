@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
 import pathlib
 from collections import namedtuple
 
 import numpy as np
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.preprocessing import label_binarize, LabelBinarizer
+from sklearn.preprocessing import LabelBinarizer
 
 import draugr
-from draugr import plot_confusion_matrix
-from munin.utilities.html_embeddings import generate_math_html, plt_html, plt_html_svg, generate_metrics
+from munin.utilities.html_embeddings import plt_html, plt_html_svg, generate_metrics
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
 
@@ -26,11 +24,13 @@ def generate_html(
     file_name, template_page="classification_report_template.html", template_path=None, **kwargs
 ):
     if not template_path:
-        template_path = pathlib.Path.joinpath(os.path.dirname(__file__), "templates")
+        template_path = pathlib.Path(__file__).parent / "templates"
 
     from jinja2 import Environment, select_autoescape, FileSystemLoader
 
-    env = Environment(loader=FileSystemLoader(template_path), autoescape=select_autoescape(["html", "xml"]))
+    env = Environment(
+        loader=FileSystemLoader(str(template_path)), autoescape=select_autoescape(["html", "xml"])
+    )
     template = env.get_template(template_page)
     with open(f"{file_name}.html", "w") as f:
         f.writelines(template.render(**kwargs))
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     y_p_max = y_pred.argmax(axis=-1)
     y_t_max = y_test.argmax(axis=-1)
 
-    plot_confusion_matrix(y_t_max, y_p_max, class_names=class_names)
+    draugr.plot_confusion_matrix(y_t_max, y_p_max, class_names=class_names)
 
     title = "Classification Report"
     confusion_matrix = plt_html(format="png", size=[800, 800])

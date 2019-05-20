@@ -1,9 +1,7 @@
-import glob
 import pathlib
 
 from setuptools import find_packages
 
-import os
 import re
 
 with open(pathlib.Path(__file__).parent / "munin/version.py", "r") as f:
