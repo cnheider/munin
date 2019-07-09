@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     do_generate_pdf = False
     plt.rcParams["figure.figsize"] = (3, 3)
-    from warg import NOD
+    from warg.named_ordered_dictionary import NOD
 
     data_path = pathlib.Path.home()
     num_classes = 3
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     plt.plot(np.random.random((3, 3)))
 
-    a = ReportEntry(
+    LATEST_GPU_STATS = ReportEntry(
         name=1,
         figure=plt_html_svg(size=[cell_width, cell_width]),
         prediction="a",
@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
     title = "Classification Report"
     confusion_matrix = plt_html(format="png", size=[800, 800])
-    predictions = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
+    predictions = [[LATEST_GPU_STATS, b, d], [LATEST_GPU_STATS, c, d], [LATEST_GPU_STATS, c, b], [c, b, e]]
 
     metric_fields, metrics = generate_metrics(y_t_max, y_p_max, class_names)
 
@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
     roc_figure = plt_html(format="png", size=[800, 800])
 
-    bundle = NOD.dict_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+    bundle = NOD.nod_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
 
     file_name = title.lower().replace(" ", "_")
 

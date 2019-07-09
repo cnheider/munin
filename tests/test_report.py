@@ -9,7 +9,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
 from draugr import plot_confusion_matrix
-from warg import NOD
+from warg.named_ordered_dictionary import NOD
 
 from munin.utilities.html_embeddings import plt_html_svg, generate_metrics
 
@@ -116,7 +116,7 @@ def test_generation(do_generate_pdf=False):
 
     roc_figure = plt_html(format="png", size=[800, 800])
 
-    bundle = NOD.dict_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+    bundle = NOD.nod_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
 
     file_name = title.lower().replace(" ", "_")
 

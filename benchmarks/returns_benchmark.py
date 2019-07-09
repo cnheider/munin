@@ -3,7 +3,7 @@ from collections import namedtuple
 import sorcery
 
 from benchmarks.benchmark_func import benchmark_func
-from warg import NOD
+from warg.named_ordered_dictionary import NOD
 
 
 def returns_benchmark():
@@ -32,7 +32,7 @@ def returns_benchmark():
         return NOD(a=a, b=b, c=c)
 
     def inferred_return():
-        return NOD.dict_of(a, b, c)
+        return NOD.nod_of(a, b, c)
 
     def namedtuple_return():
         return RandomABC(a, b, c)

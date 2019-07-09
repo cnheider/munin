@@ -6,7 +6,7 @@ from io import BytesIO, StringIO
 import markdown
 from pycm import *
 
-from warg import NOD
+from warg.named_ordered_dictionary import NOD
 
 __author__ = "cnheider"
 __doc__ = """
@@ -90,7 +90,7 @@ def generate_metrics(y_test, y_pred, classes, decimals=1):
         numpy.round(sum(cm.AUC.values()) / len(classes), decimals),
     )
 
-    metrics = NOD.dict_of(
+    metrics = NOD.nod_of(
         support, sensitivity, specificity, precision, npv, accuracy, f1_score, mcc, roc_auc
     ).as_flat_tuples()
 
