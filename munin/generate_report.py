@@ -3,12 +3,12 @@
 import pathlib
 from collections import namedtuple
 
+import draugr
 import numpy as np
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
-import draugr
-from munin.utilities.html_embeddings import plt_html, plt_html_svg, generate_metrics
+from munin.utilities.html_embeddings import generate_metrics, plt_html, plt_html_svg
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
 

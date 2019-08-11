@@ -99,16 +99,16 @@ def generate_metrics(y_test, y_pred, classes, decimals=1):
 
 def generate_math_html(equation="e^x", inline=True, classes="math_span"):
     """
-    For inline math, use \(...\).
-    For standalone math, use $$...$$, \[...\] or \begin...\end.
-    md = markdown.Markdown(extensions=['mdx_math'])
-    md.convert('$$e^x$$')
+  For inline math, use \(...\).
+  For standalone math, use $$...$$, \[...\] or \begin...\end.
+  md = markdown.Markdown(extensions=['mdx_math'])
+  md.convert('$$e^x$$')
 
-      :param classes:
-    :param equation:
-    :param inline:
-    :return:
-  """
+    :param classes:
+  :param equation:
+  :param inline:
+  :return:
+"""
     md = markdown.Markdown(extensions=["mdx_math"], extension_configs={"mdx_math": {"add_preview": True}})
     if inline:
         stripped = md.convert(f"\({equation}\)").lstrip("<p>").rstrip("</p>")

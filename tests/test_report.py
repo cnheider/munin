@@ -5,19 +5,18 @@ import pathlib
 
 import draugr
 import matplotlib.pyplot as plt
+from draugr import plot_confusion_matrix
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
-from draugr import plot_confusion_matrix
+from munin.utilities.html_embeddings import generate_metrics, plt_html_svg
 from warg.named_ordered_dictionary import NOD
-
-from munin.utilities.html_embeddings import plt_html_svg, generate_metrics
 
 plt.rcParams["figure.figsize"] = (3, 3)
 import numpy as np
 
 from munin.generate_report import generate_pdf, generate_html, ReportEntry
-from munin.utilities.html_embeddings import generate_math_html, plt_html
+from munin.utilities.html_embeddings import plt_html
 
 __author__ = "cnheider"
 __doc__ = """
