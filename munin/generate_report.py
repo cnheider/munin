@@ -4,7 +4,7 @@ import pathlib
 from collections import namedtuple
 
 import draugr
-import numpy as np
+import numpy
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
@@ -12,7 +12,7 @@ from munin.utilities.html_embeddings import generate_metrics, plt_html, plt_html
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
 
-__author__ = "cnheider"
+__author__ = "Christian Heider Nielsen"
 __doc__ = """
 Created on 27/04/2019
 
@@ -44,17 +44,17 @@ def generate_pdf(file_name):
 
 if __name__ == "__main__":
 
-    import matplotlib.pyplot as plt
+    from matplotlib import pyplot
 
     do_generate_pdf = False
-    plt.rcParams["figure.figsize"] = (3, 3)
+    pyplot.rcParams["figure.figsize"] = (3, 3)
     from warg.named_ordered_dictionary import NOD
 
     data_path = pathlib.Path.home()
     num_classes = 3
     cell_width = (800 / num_classes) - 6 - 6 * 2
 
-    plt.plot(np.random.random((3, 3)))
+    pyplot.plot(numpy.random.random((3, 3)))
 
     LATEST_GPU_STATS = ReportEntry(
         name=1,
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         explanation=None,
     )
 
-    plt.plot(np.ones((9, 3)))
+    pyplot.plot(numpy.ones((9, 3)))
 
     b = ReportEntry(
         name=2,
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         explanation=None,
     )
 
-    plt.plot(np.ones((5, 6)))
+    pyplot.plot(numpy.ones((5, 6)))
 
     c = ReportEntry(
         name=3,
