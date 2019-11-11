@@ -9,11 +9,11 @@ from apppath import AppPath
 
 __project__ = "Munin"
 __author__ = "Christian Heider Nielsen"
-__version__ = "0.1.2"
+__version__ = "0.2.0"
 __doc__ = r"""
-.. module:: neodroidvision
+.. module:: Munin
    :platform: Unix, Windows
-   :synopsis: A set of generel computer vision tools build for the neodroid platform.
+   :synopsis: A tool for generating classification reports
 
 .. moduleauthor:: Christian Heider Nielsen <christian.heider@alexandra.dk>
 

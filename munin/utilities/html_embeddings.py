@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from collections import namedtuple
-from io import BytesIO, StringIO
 
-import markdown
-from pycm import *
-
-from warg.named_ordered_dictionary import NOD
 
 __author__ = "Christian Heider Nielsen"
 __doc__ = """
@@ -15,12 +9,19 @@ Created on 27/04/2019
 @author: cnheider
 """
 
+from collections import namedtuple
+from io import BytesIO, StringIO
+
+from warg.named_ordered_dictionary import NOD
 from matplotlib import pyplot
 
 MetricEntry = namedtuple("MetricEntry", ("Description", "Math", "Values", "Aggregated"))
 
 
 def generate_metrics(y_test, y_pred, classes, decimals=1):
+    import numpy
+    from pycm import ConfusionMatrix
+
     cm = ConfusionMatrix(actual_vector=y_test, predict_vector=y_pred)
     cm.relabel({k: v for k, v in zip(range(len(classes)), classes)})
 
@@ -104,11 +105,13 @@ For standalone math, use $$...$$, \[...\] or \begin...\end.
 md = markdown.Markdown(extensions=['mdx_math'])
 md.convert('$$e^x$$')
 
-  :param classes:
+:param classes:
 :param equation:
 :param inline:
 :return:
 """
+    import markdown
+
     md = markdown.Markdown(extensions=["mdx_math"], extension_configs={"mdx_math": {"add_preview": True}})
     if inline:
         stripped = md.convert(f"\({equation}\)").lstrip("<p>").rstrip("</p>")
