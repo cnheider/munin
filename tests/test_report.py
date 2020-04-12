@@ -3,12 +3,12 @@
 
 import pathlib
 
-import draugr
 from matplotlib import pyplot
-from draugr import plot_confusion_matrix
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
+import draugr
+from draugr import plot_confusion_matrix
 from munin.utilities.html_embeddings import generate_metrics, plt_html_svg
 from warg.named_ordered_dictionary import NOD
 

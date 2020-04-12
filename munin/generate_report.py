@@ -3,11 +3,11 @@
 import pathlib
 from collections import namedtuple
 
-import draugr
 import numpy
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
+import draugr
 from munin.utilities.html_embeddings import generate_metrics, plt_html, plt_html_svg
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
@@ -33,7 +33,7 @@ def generate_html(
     )
     template = env.get_template(template_page)
     with open(f"{file_name}.html", "w") as f:
-        f.writelines(template.render(**kwargs))
+        f.writelines(template.render())
 
 
 def generate_pdf(file_name):
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     pyplot.plot(numpy.random.random((3, 3)))
 
-    LATEST_GPU_STATS = ReportEntry(
+    GPU_STATS = ReportEntry(
         name=1,
         figure=plt_html_svg(size=[cell_width, cell_width]),
         prediction="a",
@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
     title = "Classification Report"
     confusion_matrix = plt_html(format="png", size=[800, 800])
-    predictions = [[LATEST_GPU_STATS, b, d], [LATEST_GPU_STATS, c, d], [LATEST_GPU_STATS, c, b], [c, b, e]]
+    predictions = [[GPU_STATS, b, d], [GPU_STATS, c, d], [GPU_STATS, c, b], [c, b, e]]
 
     metric_fields, metrics = generate_metrics(y_t_max, y_p_max, class_names)
 

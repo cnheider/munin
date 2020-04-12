@@ -12,8 +12,9 @@ Created on 27/04/2019
 from collections import namedtuple
 from io import BytesIO, StringIO
 
-from warg.named_ordered_dictionary import NOD
 from matplotlib import pyplot
+
+from warg.named_ordered_dictionary import NOD
 
 MetricEntry = namedtuple("MetricEntry", ("Description", "Math", "Values", "Aggregated"))
 
