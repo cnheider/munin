@@ -1,26 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from collections import namedtuple
-from io import BytesIO, StringIO
 
-import markdown
-from pycm import *
 
-from warg.named_ordered_dictionary import NOD
-
-__author__ = "cnheider"
+__author__ = "Christian Heider Nielsen"
 __doc__ = """
 Created on 27/04/2019
 
 @author: cnheider
 """
 
-import matplotlib.pyplot as plt
+from collections import namedtuple
+from io import BytesIO, StringIO
+
+from matplotlib import pyplot
+
+from warg.named_ordered_dictionary import NOD
 
 MetricEntry = namedtuple("MetricEntry", ("Description", "Math", "Values", "Aggregated"))
 
 
 def generate_metrics(y_test, y_pred, classes, decimals=1):
+    import numpy
+    from pycm import ConfusionMatrix
+
     cm = ConfusionMatrix(actual_vector=y_test, predict_vector=y_pred)
     cm.relabel({k: v for k, v in zip(range(len(classes)), classes)})
 
@@ -99,16 +101,18 @@ def generate_metrics(y_test, y_pred, classes, decimals=1):
 
 def generate_math_html(equation="e^x", inline=True, classes="math_span"):
     """
-    For inline math, use \(...\).
-    For standalone math, use $$...$$, \[...\] or \begin...\end.
-    md = markdown.Markdown(extensions=['mdx_math'])
-    md.convert('$$e^x$$')
+For inline math, use \(...\).
+For standalone math, use $$...$$, \[...\] or \begin...\end.
+md = markdown.Markdown(extensions=['mdx_math'])
+md.convert('$$e^x$$')
 
-      :param classes:
-    :param equation:
-    :param inline:
-    :return:
-  """
+:param classes:
+:param equation:
+:param inline:
+:return:
+"""
+    import markdown
+
     md = markdown.Markdown(extensions=["mdx_math"], extension_configs={"mdx_math": {"add_preview": True}})
     if inline:
         stripped = md.convert(f"\({equation}\)").lstrip("<p>").rstrip("</p>")
@@ -130,7 +134,7 @@ def generate_qr():
 
 def plt_html_svg(*, size=(400, 400), dpi=100):
     fig_file = StringIO()
-    plt.savefig(fig_file, format="svg", dpi=dpi)
+    pyplot.savefig(fig_file, format="svg", dpi=dpi)
     fig_svg = f'<svg width="{size[0]}" height="{size[1]}" {fig_file.getvalue().split("<svg")[1]}'
     return fig_svg
 
@@ -142,7 +146,7 @@ def plt_html(title="image", *, format="png", size=(400, 400), dpi=100):
     import base64
 
     fig_file = BytesIO()
-    plt.savefig(fig_file, format=format, dpi=dpi)
+    pyplot.savefig(fig_file, format=format, dpi=dpi)
     fig_file.seek(0)  # rewind to beginning of file
     b64_img = base64.b64encode(fig_file.getvalue()).decode("ascii")
     return (

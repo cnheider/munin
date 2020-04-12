@@ -3,23 +3,22 @@
 
 import pathlib
 
-import draugr
-import matplotlib.pyplot as plt
+from matplotlib import pyplot
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
+import draugr
 from draugr import plot_confusion_matrix
+from munin.utilities.html_embeddings import generate_metrics, plt_html_svg
 from warg.named_ordered_dictionary import NOD
 
-from munin.utilities.html_embeddings import plt_html_svg, generate_metrics
-
-plt.rcParams["figure.figsize"] = (3, 3)
-import numpy as np
+pyplot.rcParams["figure.figsize"] = (3, 3)
+import numpy
 
 from munin.generate_report import generate_pdf, generate_html, ReportEntry
-from munin.utilities.html_embeddings import generate_math_html, plt_html
+from munin.utilities.html_embeddings import plt_html
 
-__author__ = "cnheider"
+__author__ = "Christian Heider Nielsen"
 __doc__ = """
 Created on 27/04/2019
 
@@ -32,7 +31,7 @@ def test_generation(do_generate_pdf=False):
     num_classes = 3
     cell_width = (800 / num_classes) - 6 - 6 * 2
 
-    plt.plot(np.random.random((3, 3)))
+    pyplot.plot(numpy.random.random((3, 3)))
 
     a = ReportEntry(
         name=1,
@@ -43,7 +42,7 @@ def test_generation(do_generate_pdf=False):
         explanation=None,
     )
 
-    plt.plot(np.ones((9, 3)))
+    pyplot.plot(numpy.ones((9, 3)))
 
     b = ReportEntry(
         name=2,
@@ -54,7 +53,7 @@ def test_generation(do_generate_pdf=False):
         explanation=None,
     )
 
-    plt.plot(np.ones((5, 6)))
+    pyplot.plot(numpy.ones((5, 6)))
 
     c = ReportEntry(
         name=3,

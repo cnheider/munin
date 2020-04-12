@@ -12,3 +12,4 @@ pdfkit
 scikit-learn
 sorcery
 draugr
+pycm

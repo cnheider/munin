@@ -1,9 +1,9 @@
-dist: xenial
+dist:     xenial
 language: python
 addons:
   apt:
     packages:
-       - wkhtmltopdf
+      - wkhtmltopdf
 
 python:
   - '3.6'
