@@ -8,8 +8,8 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
 import draugr
-from draugr import plot_confusion_matrix
-from munin.utilities.html_embeddings import generate_metrics, plt_html_svg
+from draugr import confusion_matrix_plot
+from munin.utilities.html_embeddings import generate_metric_table, plt_html_svg
 from warg.named_ordered_dictionary import NOD
 
 pyplot.rcParams["figure.figsize"] = (3, 3)
@@ -103,13 +103,13 @@ def test_generation(do_generate_pdf=False):
     y_p_max = y_pred.argmax(axis=-1)
     y_t_max = y_test.argmax(axis=-1)
 
-    plot_confusion_matrix(y_t_max, y_p_max, class_names=class_names)
+    confusion_matrix_plot(y_t_max, y_p_max, category_names=class_names)
 
     title = "Classification Report"
     confusion_matrix = plt_html(format="png", size=[800, 800])
     predictions = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
 
-    metric_fields, metrics = generate_metrics(y_t_max, y_p_max, class_names)
+    metric_fields, metrics = generate_metric_table(y_t_max, y_p_max, class_names)
 
     draugr.roc_plot(y_pred, y_test, n_classes)
 
