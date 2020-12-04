@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelBinarizer
 import draugr
 from draugr import confusion_matrix_plot
 from munin.utilities.html_embeddings import generate_metric_table, plt_html_svg
-from warg.named_ordered_dictionary import NOD
+from warg.data_structures.named_ordered_dictionary import NOD
 
 pyplot.rcParams["figure.figsize"] = (3, 3)
 import numpy

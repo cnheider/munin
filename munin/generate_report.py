@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     do_generate_pdf = False
     pyplot.rcParams["figure.figsize"] = (3, 3)
-    from warg.named_ordered_dictionary import NOD
+    from warg.data_structures.named_ordered_dictionary import NOD
 
     ensure_existence(out_path)
 

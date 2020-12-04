@@ -15,7 +15,7 @@ from typing import Any, Sequence, Tuple
 
 from matplotlib import pyplot
 from matplotlib.figure import Figure
-from warg.named_ordered_dictionary import NOD
+from warg.data_structures.named_ordered_dictionary import NOD
 
 MetricEntry = namedtuple("MetricEntry", ("Description", "Math", "Values", "Aggregated"))
 
@@ -156,9 +156,11 @@ def generate_qr(data: Any) -> str:
 
 def plt_html_svg(fig: Figure = None,
                  *,
-                 size: Tuple[int, int] = (400, 400),
+                 size: Sequence[int, int] = (400, 400),
                  dpi: int = 100) -> str:
   """
+
+  if figure not supplied it USEs lastest figure of pyplot
 
   :param fig:
   :param size:
@@ -166,7 +168,7 @@ def plt_html_svg(fig: Figure = None,
   :return:
   """
   fig_file = StringIO()
-  if fig is None:
+  if fig is None:  # USE lastest figure
     pyplot.savefig(fig_file, format="svg", dpi=dpi)
   else:
     fig.savefig(fig_file, format="svg", dpi=dpi)
@@ -177,9 +179,11 @@ def plt_html(fig: Figure = None,
              *,
              title: str = "image",
              format: str = "png",
-             size: Tuple[int, int] = (400, 400),
+             size: Sequence[int, int] = (400, 400),
              dpi: int = 100):
   """
+
+  if figure not supplied it USEs lastest figure of pyplot
 
   :param fig:
   :param title:
@@ -194,7 +198,7 @@ def plt_html(fig: Figure = None,
   import base64
 
   fig_file = BytesIO()
-  if fig is None:
+  if fig is None:  # USE lastest figure
     pyplot.savefig(fig_file, format=format, dpi=dpi)
   else:
     fig.savefig(fig_file, format=format, dpi=dpi)
