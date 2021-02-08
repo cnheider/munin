@@ -104,21 +104,11 @@ def generate_metric_table(
     )
 
     return NOD.nod_of(
-        support,
-        sensitivity,
-        specificity,
-        precision,
-        npv,
-        accuracy,
-        f1_score,
-        mcc,
-        roc_auc,
+        support, sensitivity, specificity, precision, npv, accuracy, f1_score, mcc, roc_auc,
     ).as_flat_tuples()
 
 
-def generate_math_html(
-    equation: str = "e^x", inline: bool = True, html_classes: str = "math_span"
-) -> str:
+def generate_math_html(equation: str = "e^x", inline: bool = True, html_classes: str = "math_span") -> str:
     """
     For inline math, use \(...\).
     For standalone math, use $$...$$, \[...\] or \begin...\end.
@@ -131,9 +121,7 @@ def generate_math_html(
     :return:"""
     import markdown
 
-    md = markdown.Markdown(
-        extensions=["mdx_math"], extension_configs={"mdx_math": {"add_preview": True}}
-    )
+    md = markdown.Markdown(extensions=["mdx_math"], extension_configs={"mdx_math": {"add_preview": True}})
     if inline:
         stripped = md.convert(f"\({equation}\)").lstrip("<p>").rstrip("</p>")
         return f'<span class="{html_classes}"><{stripped}></span>'
@@ -155,9 +143,7 @@ def generate_qr(data: Any) -> str:
     return base64.b64encode(stream.getvalue()).decode("ascii")
 
 
-def plt_html_svg(
-    fig: Figure = None, *, size: Tuple[int, int] = (400, 400), dpi: int = 100
-) -> str:
+def plt_html_svg(fig: Figure = None, *, size: Tuple[int, int] = (400, 400), dpi: int = 100) -> str:
     """
 
     if figure not supplied it USEs lastest figure of pyplot

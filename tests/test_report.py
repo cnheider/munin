@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 
-
 from matplotlib import pyplot
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
 import draugr
-from draugr import confusion_matrix_plot
+from draugr.visualisation import confusion_matrix_plot, roc_plot
 from munin.utilities.html_embeddings import generate_metric_table, plt_html_svg
 from warg.data_structures.named_ordered_dictionary import NOD
 
@@ -109,15 +108,13 @@ def test_generation(do_generate_pdf=False):
     confusion_matrix = plt_html(format="png", size=[800, 800])
     predictions = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
 
-    metric_fields, metrics = generate_metric_table(y_t_max, y_p_max, class_names)
+    metrics = generate_metric_table(y_t_max, y_p_max, class_names)
 
-    draugr.roc_plot(y_pred, y_test, n_classes)
+    roc_plot(y_pred, y_test, n_classes)
 
     roc_figure = plt_html(format="png", size=[800, 800])
 
-    bundle = NOD.nod_of(
-        title, confusion_matrix, metric_fields, metrics, predictions, roc_figure
-    )
+    bundle = NOD.nod_of(title, confusion_matrix, metrics, predictions, roc_figure)
 
     file_name = title.lower().replace(" ", "_")
 
