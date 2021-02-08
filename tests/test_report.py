@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import pathlib
+
 
 from matplotlib import pyplot
 from sklearn.multiclass import OneVsRestClassifier
@@ -14,7 +14,7 @@ from warg.data_structures.named_ordered_dictionary import NOD
 
 pyplot.rcParams["figure.figsize"] = (3, 3)
 import numpy
-
+from pathlib import Path
 from munin.generate_report import generate_pdf, generate_html, ReportEntry
 from munin.utilities.html_embeddings import plt_html
 
@@ -27,7 +27,7 @@ Created on 27/04/2019
 
 
 def test_generation(do_generate_pdf=False):
-    data_path = pathlib.Path.home()
+    data_path = Path.home()
     num_classes = 3
     cell_width = (800 / num_classes) - 6 - 6 * 2
 
@@ -115,7 +115,9 @@ def test_generation(do_generate_pdf=False):
 
     roc_figure = plt_html(format="png", size=[800, 800])
 
-    bundle = NOD.nod_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+    bundle = NOD.nod_of(
+        title, confusion_matrix, metric_fields, metrics, predictions, roc_figure
+    )
 
     file_name = title.lower().replace(" ", "_")
 

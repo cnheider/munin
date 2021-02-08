@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import pathlib
+
 from collections import namedtuple
 
 import draugr
 import numpy
 from apppath import ensure_existence
-from munin.utilities.html_embeddings import MetricEntry, generate_metric_table, plt_html, plt_html_svg
+
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
-ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
+from draugr.visualisation import confusion_matrix_plot, roc_plot
+from munin.utilities import MetricEntry, generate_metric_table, plt_html, plt_html_svg
+
+ReportEntry = namedtuple(
+    "ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation")
+    )
 
 __author__ = "Christian Heider Nielsen"
 __doc__ = """
@@ -19,33 +24,50 @@ Created on 27/04/2019
 @author: cnheider
 """
 
+from pathlib import Path
+
 
 def generate_html(
     file_name,
     template_page: str = "classification_report_template.html",
-    template_path: pathlib.Path = None,
-    **kwargs
+    template_path: Path = None,
+    **kwargs,
     ):
+  """
+  """
   if not template_path:
-    template_path = pathlib.Path(__file__).parent / "templates"
+    template_path = Path(__file__).parent / "templates"
 
   from jinja2 import Environment, select_autoescape, FileSystemLoader
 
   with open(f"{file_name}.html", "w", encoding="utf-8") as f:
-    f.writelines(Environment(loader=FileSystemLoader(str(template_path)),
-                             autoescape=select_autoescape(["html", "xml"])
-                             ).get_template(template_page).render(**kwargs))
+    f.writelines(
+        Environment(
+            loader=FileSystemLoader(str(template_path)),
+            autoescape=select_autoescape(["html", "xml"]),
+            )
+          .get_template(template_page)
+          .render(**kwargs)
+        )
 
 
 def generate_pdf(file_name):
+  """
+  """
   import pdfkit
 
   pdfkit.from_file(f"{file_name}.html", f"{file_name}.pdf")
 
 
 if __name__ == "__main__":
-  def a(title: str = "Classification Report", out_path=pathlib.Path.cwd() / 'exclude', num_classes=3):
 
+  def a(
+      title: str = "Classification Report",
+      out_path=Path.cwd() / "exclude",
+      num_classes=3,
+      ):
+    """
+    """
     from matplotlib import pyplot
 
     do_generate_pdf = False
@@ -121,39 +143,37 @@ if __name__ == "__main__":
     y = bina.fit_transform(y)
     n_classes = y.shape[1]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=2)
+    x_train, x_test, y_train, y_test = train_test_split(X, y, random_state=2)
 
     classifier = OneVsRestClassifier(svm.SVC(kernel="linear", probability=True))
-    classifier.fit(X_train, y_train)
-    y_pred = classifier.predict(X_test)
+    classifier.fit(x_train, y_train)
+    y_pred = classifier.predict(x_test)
 
     y_p_max = y_pred.argmax(axis=-1)
     y_t_max = y_test.argmax(axis=-1)
 
-    confusion_matrix = plt_html(draugr.confusion_matrix_plot(y_t_max,
-                                                             y_p_max, category_names=class_names),
-                                format="png",
-                                size=[800, 800])
-    predictions = [[GPU_STATS, b, d], [GPU_STATS, c, d], [GPU_STATS, c, b], [c, b, e]]
+    confusion_matrix = plt_html(
+        confusion_matrix_plot(y_t_max, y_p_max, category_names=class_names),
+        format="png",
+        size=[800, 800],
+        )
+    predictions = [
+        [GPU_STATS, b, d],
+        [GPU_STATS, c, d],
+        [GPU_STATS, c, b],
+        [c, b, e],
+        ]
 
-    metrics = generate_metric_table(y_t_max,
-                                    y_p_max,
-                                    class_names)
-    metric_fields = ('Metric', *MetricEntry._fields)
+    metrics = generate_metric_table(y_t_max, y_p_max, class_names)
+    metric_fields = ("Metric", *MetricEntry._fields)
 
-    roc_figure = plt_html(draugr.roc_plot(y_pred,
-                                          y_test,
-                                          n_classes),
-                          format="png",
-                          size=[800, 800])
+    roc_figure = plt_html(
+        roc_plot(y_pred, y_test, n_classes), format="png", size=[800, 800]
+        )
 
-    bundle = NOD.nod_of(title,
-                        confusion_matrix,
-                        metric_fields,
-                        metrics,
-                        predictions,
-                        roc_figure
-                        )
+    bundle = NOD.nod_of(
+        title, confusion_matrix, metric_fields, metrics, predictions, roc_figure
+        )
 
     generate_html(file_name, **bundle)
     if do_generate_pdf:

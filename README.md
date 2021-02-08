@@ -1,6 +1,14 @@
-![munin](.github/images/munin.svg)
 
-# Munin
+<!--![munin](.github/images/munin.svg)-->
+
+<p align="center">
+  <img src=".github/images/munin.svg" alt='munin' />
+</p>
+
+<h1 align="center">Munin</h1>
+
+<!--# Munin-->
+
 ```
 Old Norse: Muninn
 ```
