@@ -146,7 +146,8 @@ class MuninPackage:
         return {
             "console_scripts": [
                 # "name_of_executable = module.with:function_to_execute"
-            ]
+            ],
+            "munin_plugins": ["prcurve = plots.prcurve:prcurve [pretty-printer]"],
         }
 
     @property

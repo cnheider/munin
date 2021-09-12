@@ -6,7 +6,7 @@ from matplotlib import pyplot
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 
-import draugr
+
 from draugr.visualisation import confusion_matrix_plot, roc_plot
 from munin.utilities.html_embeddings import generate_metric_table, plt_html_svg
 from warg.data_structures.named_ordered_dictionary import NOD

@@ -3,7 +3,6 @@
 
 from collections import namedtuple
 
-import draugr
 import numpy
 from apppath import ensure_existence
 
@@ -40,7 +39,8 @@ def generate_html(
     with open(f"{file_name}.html", "w", encoding="utf-8") as f:
         f.writelines(
             Environment(
-                loader=FileSystemLoader(str(template_path)), autoescape=select_autoescape(["html", "xml"]),
+                loader=FileSystemLoader(str(template_path)),
+                autoescape=select_autoescape(["html", "xml"]),
             )
             .get_template(template_page)
             .render(**kwargs)
@@ -57,7 +57,9 @@ def generate_pdf(file_name):
 if __name__ == "__main__":
 
     def a(
-        title: str = "Classification Report", out_path=Path.cwd() / "exclude", num_classes=3,
+        title: str = "Classification Report",
+        out_path=Path.cwd() / "exclude",
+        num_classes=3,
     ):
         """"""
         from matplotlib import pyplot
