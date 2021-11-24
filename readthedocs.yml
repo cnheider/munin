@@ -1,4 +1,4 @@
-name: warg
+name: munin
 type: sphinx
 conda:
   file: docs/environment.yml
