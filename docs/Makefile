@@ -1,11 +1,13 @@
 # Minimal makefile for Sphinx documentation
+#
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = DLPipeline
+SPHINXPROJ    = Munin
 SOURCEDIR     = source
-BUILDDIR      = build
+BUILDDIR      = ../docs/github
+PYCMD 				= python
 
 # Put it first so that "make" without argument is like "make help".
 help:

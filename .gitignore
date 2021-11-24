@@ -127,3 +127,5 @@ logs/*.csv
 pip-wheel-metadata
 .pytest_cache
 build/
+
+classification_report.html

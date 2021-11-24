@@ -9,7 +9,7 @@ from apppath import AppPath
 
 __project__ = "Munin"
 __author__ = "Christian Heider Nielsen"
-__version__ = "0.2.1"
+__version__ = "0.2.3"
 __doc__ = r"""
 .. module:: Munin
    :platform: Unix, Windows
@@ -22,22 +22,21 @@ Created on 27/04/2019
 @author: cnheider
 """
 
-import pathlib
+from pathlib import Path
 
-with open(pathlib.Path(__file__).parent / "README.md", "r") as this_init_file:
+with open(Path(__file__).parent / "README.md", "r") as this_init_file:
     __doc__ += this_init_file.read()
 
 import pkg_resources
+
 
 # __all__ = ['PROJECT_APP_PATH', 'PROJECT_NAME', 'PROJECT_VERSION', 'get_version']
 
 
 def dist_is_editable(dist):
     """
-Return True if given Distribution is an editable install.
-"""
+    Return True if given Distribution is an editable install."""
     import sys
-    from pathlib import Path
 
     for path_item in sys.path:
         egg_link = Path(path_item) / f"{dist.project_name}.egg-link"
@@ -49,8 +48,10 @@ Return True if given Distribution is an editable install.
 PROJECT_NAME = __project__.lower().strip().replace(" ", "_")
 PROJECT_VERSION = __version__
 PROJECT_AUTHOR = __author__.lower().strip().replace(" ", "_")
+PROJECT_YEAR = 2019
 PROJECT_APP_PATH = AppPath(app_name=PROJECT_NAME, app_author=PROJECT_AUTHOR)
-
+PACKAGE_DATA_PATH = Path(pkg_resources.resource_filename(PROJECT_NAME, "data"))
+INCLUDE_PROJECT_READMES = False
 distributions = {v.key: v for v in pkg_resources.working_set}
 if PROJECT_NAME in distributions:
     distribution = distributions[PROJECT_NAME]
@@ -60,6 +61,7 @@ else:
 
 
 def get_version(append_time=DEVELOP):
+    """"""
     version = __version__
     if not version:
         version = os.getenv("VERSION", "0.0.0")
