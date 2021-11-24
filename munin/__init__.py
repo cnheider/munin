@@ -9,7 +9,7 @@ from apppath import AppPath
 
 __project__ = "Munin"
 __author__ = "Christian Heider Nielsen"
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 __doc__ = r"""
 .. module:: Munin
    :platform: Unix, Windows
