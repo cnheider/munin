@@ -104,7 +104,15 @@ def generate_metric_table(
     )
 
     return NOD.nod_of(
-        support, sensitivity, specificity, precision, npv, accuracy, f1_score, mcc, roc_auc,
+        support,
+        sensitivity,
+        specificity,
+        precision,
+        npv,
+        accuracy,
+        f1_score,
+        mcc,
+        roc_auc,
     ).as_flat_tuples()
 
 

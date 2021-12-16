@@ -54,7 +54,7 @@ class ExperimentalTextV2Plugin(text_v2_plugin.TextV2Plugin, experimental_plugin.
 
 # Ordering matters. The order in which these lines appear determines the
 # ordering of tabs in TensorBoard's GUI.
-_PLUGINS = [
+_PLUGINS = (
     core_plugin.CorePluginLoader,
     scalars_plugin.ScalarsPlugin,
     custom_scalars_plugin.CustomScalarsPlugin,
@@ -70,11 +70,11 @@ _PLUGINS = [
     hparams_plugin.HParamsPlugin,
     mesh_plugin.MeshPlugin,
     ExperimentalTextV2Plugin,
-]
+)
 
 
 def get_plugins():
-    """Returns a list specifying all known TensorBoard plugins.
+    """Returns a list specifying all known plugins.
 
     This includes both first-party, statically bundled plugins and
     dynamic plugins.
@@ -88,7 +88,7 @@ def get_plugins():
 
 
 def get_static_plugins():
-    """Returns a list specifying TensorBoard's default first-party plugins.
+    """Returns a list specifying  default first-party plugins.
 
     Plugins are specified in this list either via a TBLoader instance to load the
     plugin, or the TBPlugin class itself which will be loaded using a BasicLoader.
@@ -105,7 +105,7 @@ def get_static_plugins():
 
 
 def get_dynamic_plugins():
-    """Returns a list specifying TensorBoard's dynamically loaded plugins.
+    """Returns a list specifying  dynamically loaded plugins.
 
     A dynamic TensorBoard plugin is specified using entry_points [1] and it is
     the robust way to integrate plugins into TensorBoard.
