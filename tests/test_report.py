@@ -9,7 +9,8 @@ from sklearn.preprocessing import LabelBinarizer
 
 from draugr.visualisation import confusion_matrix_plot, roc_plot
 from munin.utilities.html_embeddings import generate_metric_table, plt_html_svg
-from warg.data_structures.named_ordered_dictionary import NOD
+from sorcery import dict_of
+from warg import NOD
 
 pyplot.rcParams["figure.figsize"] = (3, 3)
 import numpy
@@ -114,7 +115,7 @@ def test_generation(do_generate_pdf=False):
 
     roc_figure = plt_html(format="png", size=[800, 800])
 
-    bundle = NOD.nod_of(title, confusion_matrix, metrics, predictions, roc_figure)
+    bundle = NOD(dict_of(title, confusion_matrix, metrics, predictions, roc_figure))
 
     file_name = title.lower().replace(" ", "_")
 

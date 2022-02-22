@@ -11,6 +11,7 @@ from sklearn.preprocessing import LabelBinarizer
 
 from draugr.visualisation import confusion_matrix_plot, roc_plot
 from munin.utilities import MetricEntry, generate_metric_table, plt_html, plt_html_svg
+from sorcery import dict_of
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
 
@@ -163,7 +164,7 @@ if __name__ == "__main__":
 
         roc_figure = plt_html(roc_plot(y_pred, y_test, n_classes), format="png", size=[800, 800])
 
-        bundle = NOD.nod_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+        bundle = NOD(dict_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure))
 
         generate_html(file_name, **bundle)
         if do_generate_pdf:

@@ -15,6 +15,7 @@ from typing import Any, Sequence, Tuple
 
 from matplotlib import pyplot
 from matplotlib.figure import Figure
+from sorcery import dict_of
 from warg.data_structures.named_ordered_dictionary import NOD
 
 MetricEntry = namedtuple("MetricEntry", ("Description", "Math", "Values", "Aggregated"))
@@ -103,16 +104,18 @@ def generate_metric_table(
         numpy.round(sum(cm.AUC.values()) / len(categories), decimals),
     )
 
-    return NOD.nod_of(
-        support,
-        sensitivity,
-        specificity,
-        precision,
-        npv,
-        accuracy,
-        f1_score,
-        mcc,
-        roc_auc,
+    return NOD(
+        dict_of(
+            support,
+            sensitivity,
+            specificity,
+            precision,
+            npv,
+            accuracy,
+            f1_score,
+            mcc,
+            roc_auc,
+        )
     ).as_flat_tuples()
 
 

@@ -3,6 +3,7 @@ from collections import namedtuple
 import sorcery
 
 from benchmarks.benchmark_func import benchmark_func
+from sorcery import dict_of
 from warg.data_structures.named_ordered_dictionary import NOD
 
 
@@ -40,7 +41,7 @@ def returns_benchmark():
 
     def inferred_return():
         """"""
-        return NOD.nod_of(a, b, c)
+        return NOD(dict_of(a, b, c))
 
     def namedtuple_return():
         """"""
