@@ -147,7 +147,7 @@ class MuninPackage:
             "console_scripts": [
                 # "name_of_executable = module.with:function_to_execute"
             ],
-            "munin_plugins": ["prcurve = plots.prcurve:prcurve [pretty-printer]"],
+            "munin_plugins": ["rocurve = munin.plugins.dynamic.roc:rocurve"],
         }
 
     @property

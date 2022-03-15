@@ -1,23 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
-from matplotlib import pyplot
-from sklearn.multiclass import OneVsRestClassifier
-from sklearn.preprocessing import LabelBinarizer
-
-
-from draugr.visualisation import confusion_matrix_plot, roc_plot
-from munin.utilities.html_embeddings import generate_metric_table, plt_html_svg
-from sorcery import dict_of
-from warg import NOD
-
-pyplot.rcParams["figure.figsize"] = (3, 3)
-import numpy
-from pathlib import Path
-from munin.generate_report import generate_pdf, generate_html, ReportEntry
-from munin.utilities.html_embeddings import plt_html
-
 __author__ = "Christian Heider Nielsen"
 __doc__ = """
 Created on 27/04/2019
@@ -25,17 +8,32 @@ Created on 27/04/2019
 @author: cnheider
 """
 
+from draugr.visualisation import confusion_matrix_plot, roc_plot
+from matplotlib import pyplot
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.preprocessing import LabelBinarizer
+from sorcery import dict_of
+from warg import NOD
+
+from munin.html_embeddings import plt_html_svg, plt_html
+from munin.plugins.dynamic.cf import generate_metric_table
+
+pyplot.rcParams["figure.figsize"] = (3, 3)
+import numpy
+from pathlib import Path
+from munin.generate_report import generate_pdf, generate_html, ReportEntry
+
 
 def test_generation(do_generate_pdf=False):
     data_path = Path.home()
     num_classes = 3
-    cell_width = (800 / num_classes) - 6 - 6 * 2
+    cell_width = int((800 / num_classes) - 6 - 6 * 2)
 
     pyplot.plot(numpy.random.random((3, 3)))
 
     a = ReportEntry(
         name=1,
-        figure=plt_html_svg(size=[cell_width, cell_width]),
+        figure=plt_html_svg(size=(cell_width, cell_width)),
         prediction="a",
         truth="b",
         outcome="fp",
@@ -46,7 +44,7 @@ def test_generation(do_generate_pdf=False):
 
     b = ReportEntry(
         name=2,
-        figure=plt_html(format="svg", size=[cell_width, cell_width]),
+        figure=plt_html(format="svg", size=(cell_width, cell_width)),
         prediction="b",
         truth="c",
         outcome="fp",
@@ -57,7 +55,7 @@ def test_generation(do_generate_pdf=False):
 
     c = ReportEntry(
         name=3,
-        figure=plt_html(size=[cell_width, cell_width]),
+        figure=plt_html(size=(cell_width, cell_width)),
         prediction="a",
         truth="a",
         outcome="tp",
@@ -66,7 +64,7 @@ def test_generation(do_generate_pdf=False):
 
     d = ReportEntry(
         name="fas3",
-        figure=plt_html(format="jpg", size=[cell_width, cell_width]),
+        figure=plt_html(format="jpg", size=(cell_width, cell_width)),
         prediction="a",
         truth="a",
         outcome="tp",
@@ -75,11 +73,11 @@ def test_generation(do_generate_pdf=False):
 
     e = ReportEntry(
         name="fas3",
-        figure=plt_html(format="jpeg", size=[cell_width, cell_width]),
+        figure=plt_html(format="jpeg", size=(cell_width, cell_width)),
         prediction="c",
         truth="c",
         outcome="tn",
-        explanation=plt_html(format="svg", size=[cell_width, cell_width]),
+        explanation=plt_html(format="svg", size=(cell_width, cell_width)),
     )
 
     from sklearn import svm, datasets
@@ -106,14 +104,14 @@ def test_generation(do_generate_pdf=False):
     confusion_matrix_plot(y_t_max, y_p_max, category_names=class_names)
 
     title = "Classification Report"
-    confusion_matrix = plt_html(format="png", size=[800, 800])
+    confusion_matrix = plt_html(format="png", size=(800, 800))
     predictions = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
 
     metrics = generate_metric_table(y_t_max, y_p_max, class_names)
 
     roc_plot(y_pred, y_test, n_classes)
 
-    roc_figure = plt_html(format="png", size=[800, 800])
+    roc_figure = plt_html(format="png", size=(800, 800))
 
     bundle = NOD(dict_of(title, confusion_matrix, metrics, predictions, roc_figure))
 
