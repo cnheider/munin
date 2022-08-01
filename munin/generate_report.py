@@ -9,38 +9,42 @@ Created on 27/04/2019
 """
 
 from collections import namedtuple
+from typing import Union
 
+import jinja2
 import numpy
 from apppath import ensure_existence
-
+from draugr.visualisation import confusion_matrix_plot, roc_plot
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
-
-from draugr.visualisation import confusion_matrix_plot, roc_plot
-from munin.html_embeddings import MetricEntry, plt_html, plt_html_svg
 from sorcery import dict_of
+from warg import drop_unused_kws, passes_kws_to
 
+from munin.html_embeddings import MetricEntry, plt_html, plt_html_svg
 from munin.plugins.dynamic.cf import generate_metric_table
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
 
-
 from pathlib import Path
 
 
+@drop_unused_kws
+@passes_kws_to(jinja2.environment.Template.render)
 def generate_html(
-    file_name,
+    file_name: Union[str, Path],
     template_page: str = "classification_report_template.html",
     template_path: Path = None,
     **kwargs,
-):
-    """"""
+) -> None:
+    """description"""
     if not template_path:
         template_path = Path(__file__).parent / "templates"
 
     from jinja2 import Environment, select_autoescape, FileSystemLoader
 
-    with open(f"{file_name}.html", "w", encoding="utf-8") as f:
+    p = Path(file_name).with_suffix(".html")
+
+    with open(f"{p}", "w", encoding="utf-8") as f:
         f.writelines(
             Environment(
                 loader=FileSystemLoader(str(template_path)),
@@ -51,11 +55,13 @@ def generate_html(
         )
 
 
-def generate_pdf(file_name):
-    """"""
+def generate_pdf(file_name: Union[str, Path]) -> None:
+    """description"""
     import pdfkit
 
-    pdfkit.from_file(f"{file_name}.html", f"{file_name}.pdf")
+    p = Path(file_name)
+
+    pdfkit.from_file(f"{p.with_suffix('.html')}", f"{p.with_suffix('.pdf')}")
 
 
 if __name__ == "__main__":
@@ -65,7 +71,7 @@ if __name__ == "__main__":
         out_path=Path.cwd() / "exclude",
         num_classes=3,
     ):
-        """"""
+        """description"""
         from matplotlib import pyplot
 
         do_generate_pdf = False

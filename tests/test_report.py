@@ -15,7 +15,7 @@ from sklearn.preprocessing import LabelBinarizer
 from sorcery import dict_of
 from warg import NOD
 
-from munin.html_embeddings import plt_html_svg, plt_html
+from munin.html_embeddings import ReportFormatEnum, plt_html, plt_html_svg
 from munin.plugins.dynamic.cf import generate_metric_table
 
 pyplot.rcParams["figure.figsize"] = (3, 3)
@@ -44,7 +44,7 @@ def test_generation(do_generate_pdf=False):
 
     b = ReportEntry(
         name=2,
-        figure=plt_html(format="svg", size=(cell_width, cell_width)),
+        figure=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
         prediction="b",
         truth="c",
         outcome="fp",
@@ -64,7 +64,7 @@ def test_generation(do_generate_pdf=False):
 
     d = ReportEntry(
         name="fas3",
-        figure=plt_html(format="jpg", size=(cell_width, cell_width)),
+        figure=plt_html(report_format=ReportFormatEnum.jpg, size=(cell_width, cell_width)),
         prediction="a",
         truth="a",
         outcome="tp",
@@ -73,11 +73,11 @@ def test_generation(do_generate_pdf=False):
 
     e = ReportEntry(
         name="fas3",
-        figure=plt_html(format="jpeg", size=(cell_width, cell_width)),
+        figure=plt_html(report_format=ReportFormatEnum.jpeg, size=(cell_width, cell_width)),
         prediction="c",
         truth="c",
         outcome="tn",
-        explanation=plt_html(format="svg", size=(cell_width, cell_width)),
+        explanation=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
     )
 
     from sklearn import svm, datasets
@@ -104,14 +104,14 @@ def test_generation(do_generate_pdf=False):
     confusion_matrix_plot(y_t_max, y_p_max, category_names=class_names)
 
     title = "Classification Report"
-    confusion_matrix = plt_html(format="png", size=(800, 800))
+    confusion_matrix = plt_html(report_format=ReportFormatEnum.png, size=(800, 800))
     predictions = [[a, b, d], [a, c, d], [a, c, b], [c, b, e]]
 
     metrics = generate_metric_table(y_t_max, y_p_max, class_names)
 
     roc_plot(y_pred, y_test, n_classes)
 
-    roc_figure = plt_html(format="png", size=(800, 800))
+    roc_figure = plt_html(report_format=ReportFormatEnum.png, size=(800, 800))
 
     bundle = NOD(dict_of(title, confusion_matrix, metrics, predictions, roc_figure))
 

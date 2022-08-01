@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+__author__ = "Christian Heider Nielsen"
+
+__doc__ = """
+Created on 27/04/2019
+
+@author: cnheider
+"""
+
+
 from typing import Sequence
 
 import numpy
@@ -5,7 +17,7 @@ from pycm import ConfusionMatrix
 from sorcery import dict_of
 from warg.data_structures.named_ordered_dictionary import NOD
 
-from munin.html_embeddings import generate_math_html, MetricEntry
+from munin.html_embeddings import MetricEntry, generate_math_html
 
 
 def generate_metric_table(
