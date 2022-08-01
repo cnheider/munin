@@ -6,10 +6,14 @@
     <h1 class='animated fadeIn'>{{ title }}</h1>
     <h2 class='animated fadeIn'>Model: {{ model_name }}</h2>
 
-    {% include "confusion_matrix.html" %}
+    {% if false %}
+    <!--{% include "confusion_matrix.html" %} moved to plugin-->
+        <!--{% include "roc.html" %} moved to plugin-->
+    <!--{% include "prc.html" %} moved to plugin-->
+    {% endif %}
+
     {% include "metrics.html" %}
-    {% include "roc.html" %}
-    {% include "prc.html" %}
+
     {% include "predictions.html" %}
   </body>
 </html>

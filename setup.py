@@ -4,7 +4,7 @@ from typing import List, Sequence
 
 
 def python_version_check(major: int = 3, minor: int = 7):
-    """"""
+    """description"""
     import sys
 
     assert sys.version_info.major == major and sys.version_info.minor >= minor, (
@@ -19,14 +19,14 @@ from pathlib import Path
 
 
 def read_reqs(file: str, path: Path) -> List[str]:
-    """"""
+    """description"""
 
     def readlines_ignore_comments(f):
-        """"""
+        """description"""
         return [a_ for a_ in f.readlines() if "#" not in a_ and a_]
 
     def recursive_flatten_ignore_str(seq: Sequence) -> Sequence:
-        """"""
+        """description"""
         if not seq:  # is empty Sequence
             return seq
         if isinstance(seq[0], str):
@@ -39,7 +39,7 @@ def read_reqs(file: str, path: Path) -> List[str]:
         return (*seq[:1], *recursive_flatten_ignore_str(seq[1:]))
 
     def unroll_nested_reqs(req_str: str, base_path: Path):
-        """"""
+        """description"""
         if req_str.startswith("-r"):
             with open(base_path / req_str.strip("-r").strip()) as f:
                 return [unroll_nested_reqs(req.strip(), base_path) for req in readlines_ignore_comments(f)]
@@ -82,32 +82,32 @@ class MuninPackage:
 
     @property
     def setup_dependencies(self) -> list:
-        """"""
+        """description"""
         return read_reqs("requirements_setup.txt", Path(__file__).parent / "requirements")
 
     @property
     def package_name(self) -> str:
-        """"""
+        """description"""
         return project_name
 
     @property
     def url(self) -> str:
-        """"""
+        """description"""
         return "https://github.com/cnheider/munin"
 
     @property
     def download_url(self):
-        """"""
+        """description"""
         return self.url + "/releases"
 
     @property
     def readme_type(self):
-        """"""
+        """description"""
         return "text/markdown"
 
     @property
     def packages(self):
-        """"""
+        """description"""
         return find_packages(
             exclude=[
                 # 'Path/To/Exclude'
@@ -116,43 +116,43 @@ class MuninPackage:
 
     @property
     def author_name(self):
-        """"""
+        """description"""
         return author
 
     @property
     def author_email(self):
-        """"""
+        """description"""
         return "christian.heider@alexandra.dk"
 
     @property
     def maintainer_name(self):
-        """"""
+        """description"""
         return self.author_name
 
     @property
     def maintainer_email(self):
-        """"""
+        """description"""
         return self.author_email
 
     @property
     def package_data(self):
-        """"""
+        """description"""
         # data = glob.glob("munin/templates/**.html", recursive=True)
         return {"munin": ["templates/*.html"]}
 
     @property
     def entry_points(self):
-        """"""
+        """description"""
         return {
             "console_scripts": [
                 # "name_of_executable = module.with:function_to_execute"
             ],
-            "munin_plugins": ["prcurve = plots.prcurve:prcurve [pretty-printer]"],
+            "munin_plugins": ["rocurve = munin.plugins.dynamic.roc:rocurve"],
         }
 
     @property
     def extras(self) -> dict:
-        """"""
+        """description"""
         these_extras = {
             # 'ExtraName':['package-name; platform_system == "System(Linux,Windows)"'
         }
@@ -174,34 +174,34 @@ class MuninPackage:
 
     @property
     def requirements(self) -> list:
-        """"""
+        """description"""
         return read_reqs("requirements.txt", Path(__file__).parent)
 
     @property
     def description(self):
-        """"""
+        """description"""
         return "A package for easing return of multiple values"
 
     @property
     def readme(self):
-        """"""
+        """description"""
         with open("README.md", encoding="utf8") as f:
             return f.read()
 
     @property
     def keyword(self):
-        """"""
+        """description"""
         with open("KEYWORDS.md") as f:
             return f.read()
 
     @property
     def license(self):
-        """"""
+        """description"""
         return "Apache License, Version 2.0"
 
     @property
     def classifiers(self):
-        """"""
+        """description"""
         return [
             "Development Status :: 4 - Beta",
             "Environment :: Console",
@@ -220,7 +220,7 @@ class MuninPackage:
 
     @property
     def version(self):
-        """"""
+        """description"""
         return version
 
 

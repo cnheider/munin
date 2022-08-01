@@ -1,19 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from collections import namedtuple
-
-import numpy
-from apppath import ensure_existence
-
-from sklearn.multiclass import OneVsRestClassifier
-from sklearn.preprocessing import LabelBinarizer
-
-from draugr.visualisation import confusion_matrix_plot, roc_plot
-from munin.utilities import MetricEntry, generate_metric_table, plt_html, plt_html_svg
-
-ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
-
 __author__ = "Christian Heider Nielsen"
 __doc__ = """
 Created on 27/04/2019
@@ -21,22 +8,43 @@ Created on 27/04/2019
 @author: cnheider
 """
 
+from collections import namedtuple
+from typing import Union
+
+import jinja2
+import numpy
+from apppath import ensure_existence
+from draugr.visualisation import confusion_matrix_plot, roc_plot
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.preprocessing import LabelBinarizer
+from sorcery import dict_of
+from warg import drop_unused_kws, passes_kws_to
+
+from munin.html_embeddings import MetricEntry, plt_html, plt_html_svg
+from munin.plugins.dynamic.cf import generate_metric_table
+
+ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
+
 from pathlib import Path
 
 
+@drop_unused_kws
+@passes_kws_to(jinja2.environment.Template.render)
 def generate_html(
-    file_name,
+    file_name: Union[str, Path],
     template_page: str = "classification_report_template.html",
     template_path: Path = None,
     **kwargs,
-):
-    """"""
+) -> None:
+    """description"""
     if not template_path:
         template_path = Path(__file__).parent / "templates"
 
     from jinja2 import Environment, select_autoescape, FileSystemLoader
 
-    with open(f"{file_name}.html", "w", encoding="utf-8") as f:
+    p = Path(file_name).with_suffix(".html")
+
+    with open(f"{p}", "w", encoding="utf-8") as f:
         f.writelines(
             Environment(
                 loader=FileSystemLoader(str(template_path)),
@@ -47,11 +55,13 @@ def generate_html(
         )
 
 
-def generate_pdf(file_name):
-    """"""
+def generate_pdf(file_name: Union[str, Path]) -> None:
+    """description"""
     import pdfkit
 
-    pdfkit.from_file(f"{file_name}.html", f"{file_name}.pdf")
+    p = Path(file_name)
+
+    pdfkit.from_file(f"{p.with_suffix('.html')}", f"{p.with_suffix('.pdf')}")
 
 
 if __name__ == "__main__":
@@ -61,7 +71,7 @@ if __name__ == "__main__":
         out_path=Path.cwd() / "exclude",
         num_classes=3,
     ):
-        """"""
+        """description"""
         from matplotlib import pyplot
 
         do_generate_pdf = False
@@ -72,13 +82,13 @@ if __name__ == "__main__":
 
         file_name = out_path / title.lower().replace(" ", "_")
 
-        cell_width = (800 / num_classes) - 6 - 6 * 2
+        cell_width = int((800 / num_classes) - 6 - 6 * 2)
 
         pyplot.plot(numpy.random.random((3, 3)))
 
         GPU_STATS = ReportEntry(
             name=1,
-            figure=plt_html_svg(size=[cell_width, cell_width]),
+            figure=plt_html_svg(size=(cell_width, cell_width)),
             prediction="a",
             truth="b",
             outcome="fp",
@@ -89,7 +99,7 @@ if __name__ == "__main__":
 
         b = ReportEntry(
             name=2,
-            figure=plt_html(format="svg", size=[cell_width, cell_width]),
+            figure=plt_html(format="svg", size=(cell_width, cell_width)),
             prediction="b",
             truth="c",
             outcome="fp",
@@ -100,7 +110,7 @@ if __name__ == "__main__":
 
         c = ReportEntry(
             name=3,
-            figure=plt_html(size=[cell_width, cell_width]),
+            figure=plt_html(size=(cell_width, cell_width)),
             prediction="a",
             truth="a",
             outcome="tp",
@@ -109,7 +119,7 @@ if __name__ == "__main__":
 
         d = ReportEntry(
             name="fas3",
-            figure=plt_html(format="jpg", size=[cell_width, cell_width]),
+            figure=plt_html(format="jpg", size=(cell_width, cell_width)),
             prediction="a",
             truth="a",
             outcome="tp",
@@ -118,11 +128,11 @@ if __name__ == "__main__":
 
         e = ReportEntry(
             name="fas3",
-            figure=plt_html(format="jpeg", size=[cell_width, cell_width]),
+            figure=plt_html(format="jpeg", size=(cell_width, cell_width)),
             prediction="c",
             truth="c",
             outcome="tn",
-            explanation=plt_html(format="svg", size=[cell_width, cell_width]),
+            explanation=plt_html(format="svg", size=(cell_width, cell_width)),
         )
 
         from sklearn import svm, datasets
@@ -149,7 +159,7 @@ if __name__ == "__main__":
         confusion_matrix = plt_html(
             confusion_matrix_plot(y_t_max, y_p_max, category_names=class_names),
             format="png",
-            size=[800, 800],
+            size=(800, 800),
         )
         predictions = [
             [GPU_STATS, b, d],
@@ -161,9 +171,9 @@ if __name__ == "__main__":
         metrics = generate_metric_table(y_t_max, y_p_max, class_names)
         metric_fields = ("Metric", *MetricEntry._fields)
 
-        roc_figure = plt_html(roc_plot(y_pred, y_test, n_classes), format="png", size=[800, 800])
+        roc_figure = plt_html(roc_plot(y_pred, y_test, n_classes), format="png", size=(800, 800))
 
-        bundle = NOD.nod_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+        bundle = NOD(dict_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure))
 
         generate_html(file_name, **bundle)
         if do_generate_pdf:

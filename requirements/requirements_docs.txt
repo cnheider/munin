@@ -1,4 +1,5 @@
-sphinx==1.8.5 # -e git://github.com/snide/sphinx_rtd_theme.git#egg=sphinx_rtd_theme
+sphinx>=1.8.5 # -e git://github.com/snide/sphinx_rtd_theme.git#egg=sphinx_rtd_theme
 m2r2
 sphinxcontrib-programoutput
 munin
+mistune==0.8.4
