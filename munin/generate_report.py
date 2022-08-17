@@ -8,8 +8,14 @@ Created on 27/04/2019
 @author: cnheider
 """
 
+__all__ = [
+    "generate_pdf",
+    "generate_html",
+]
+
 from collections import namedtuple
 from typing import Union
+from pathlib import Path
 
 import jinja2
 import numpy
@@ -19,24 +25,35 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 from sorcery import dict_of
 from warg import drop_unused_kws, passes_kws_to
-
+from munin.report_format import ReportFormatEnum
 from munin.html_embeddings import MetricEntry, plt_html, plt_html_svg
 from munin.plugins.dynamic.cf import generate_metric_table
 
 ReportEntry = namedtuple("ReportEntry", ("name", "figure", "prediction", "truth", "outcome", "explanation"))
 
-from pathlib import Path
 
-
-@drop_unused_kws
 @passes_kws_to(jinja2.environment.Template.render)
 def generate_html(
     file_name: Union[str, Path],
+    *,
     template_page: str = "classification_report_template.html",
     template_path: Path = None,
     **kwargs,
 ) -> None:
-    """description"""
+    """
+    generate html report from classification report
+
+    :param file_name:
+    :type file_name:
+    :param template_page:
+    :type template_page:
+    :param template_path:
+    :type template_path:
+    :param kwargs:
+    :type kwargs:
+    :return:
+    :rtype:
+    """
     if not template_path:
         template_path = Path(__file__).parent / "templates"
 
@@ -56,7 +73,15 @@ def generate_html(
 
 
 def generate_pdf(file_name: Union[str, Path]) -> None:
-    """description"""
+    """
+
+    Generate pdf report from classification report
+
+    :param file_name:
+    :type file_name:
+    :return:
+    :rtype:
+    """
     import pdfkit
 
     p = Path(file_name)
@@ -99,7 +124,7 @@ if __name__ == "__main__":
 
         b = ReportEntry(
             name=2,
-            figure=plt_html(format="svg", size=(cell_width, cell_width)),
+            figure=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
             prediction="b",
             truth="c",
             outcome="fp",
@@ -119,7 +144,7 @@ if __name__ == "__main__":
 
         d = ReportEntry(
             name="fas3",
-            figure=plt_html(format="jpg", size=(cell_width, cell_width)),
+            figure=plt_html(report_format=ReportFormatEnum.jpg, size=(cell_width, cell_width)),
             prediction="a",
             truth="a",
             outcome="tp",
@@ -128,11 +153,11 @@ if __name__ == "__main__":
 
         e = ReportEntry(
             name="fas3",
-            figure=plt_html(format="jpeg", size=(cell_width, cell_width)),
+            figure=plt_html(report_format=ReportFormatEnum.jpeg, size=(cell_width, cell_width)),
             prediction="c",
             truth="c",
             outcome="tn",
-            explanation=plt_html(format="svg", size=(cell_width, cell_width)),
+            explanation=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
         )
 
         from sklearn import svm, datasets
@@ -158,7 +183,7 @@ if __name__ == "__main__":
 
         confusion_matrix = plt_html(
             confusion_matrix_plot(y_t_max, y_p_max, category_names=class_names),
-            format="png",
+            report_format=ReportFormatEnum.png,
             size=(800, 800),
         )
         predictions = [
@@ -171,9 +196,14 @@ if __name__ == "__main__":
         metrics = generate_metric_table(y_t_max, y_p_max, class_names)
         metric_fields = ("Metric", *MetricEntry._fields)
 
-        roc_figure = plt_html(roc_plot(y_pred, y_test, n_classes), format="png", size=(800, 800))
+        roc_figure = plt_html(
+            roc_plot(y_pred, y_test, n_classes), report_format=ReportFormatEnum.png, size=(800, 800)
+        )
 
-        bundle = NOD(dict_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure))
+        model_name = "BestNet"
+        bundle = NOD(
+            dict_of(title, model_name, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+        )
 
         generate_html(file_name, **bundle)
         if do_generate_pdf:

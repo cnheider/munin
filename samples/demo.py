@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+__author__ = "Christian Heider Nielsen"
+__doc__ = """
+Created on 27/04/2019
+
+@author: cnheider
+"""
+
 from pathlib import Path
 
 import numpy
@@ -8,19 +18,17 @@ from sklearn.preprocessing import LabelBinarizer
 from sorcery import dict_of
 
 from munin.generate_report import ReportEntry, generate_html, generate_pdf
-from munin.html_embeddings import MetricEntry, ReportFormatEnum, plt_html, plt_html_svg
+from munin.html_embeddings import MetricEntry, plt_html, plt_html_svg
+from munin.report_format import ReportFormatEnum
 from munin.plugins.dynamic.cf import generate_metric_table
 
 
 def a(
-    title: str = "Classification Report",
-    out_path=Path.cwd() / "exclude",
-    num_classes=3,
+    title: str = "Classification Report", out_path=Path.cwd() / "exclude", num_classes=3, do_generate_pdf=True
 ):
     """description"""
     from matplotlib import pyplot
 
-    do_generate_pdf = False
     pyplot.rcParams["figure.figsize"] = (3, 3)
     from warg.data_structures.named_ordered_dictionary import NOD
 
@@ -121,7 +129,11 @@ def a(
         roc_plot(y_pred, y_test, n_classes), report_format=ReportFormatEnum.png, size=(800, 800)
     )
 
-    bundle = NOD(dict_of(title, confusion_matrix, metric_fields, metrics, predictions, roc_figure))
+    model_name = "model_name"
+
+    bundle = NOD(
+        dict_of(title, model_name, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+    )
 
     generate_html(file_name, **bundle)
     if do_generate_pdf:

@@ -15,7 +15,8 @@ from sklearn.preprocessing import LabelBinarizer
 from sorcery import dict_of
 from warg import NOD
 
-from munin.html_embeddings import ReportFormatEnum, plt_html, plt_html_svg
+from munin.html_embeddings import plt_html, plt_html_svg
+from munin.report_format import ReportFormatEnum
 from munin.plugins.dynamic.cf import generate_metric_table
 
 pyplot.rcParams["figure.figsize"] = (3, 3)

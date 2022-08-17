@@ -102,3 +102,4 @@ if __version__ is None:
 __version_info__ = tuple(int(segment) for segment in __version__.split("."))
 
 from .generate_report import generate_html, generate_pdf
+from .report_format import *

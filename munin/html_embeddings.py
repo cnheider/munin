@@ -10,32 +10,14 @@ Created on 27/04/2019
 """
 
 from collections import namedtuple
-from enum import Enum
 from io import BytesIO, StringIO
 from typing import Tuple
 
 from matplotlib import pyplot
 from matplotlib.figure import Figure
+from munin.report_format import ReportFormatEnum
 
 MetricEntry = namedtuple("MetricEntry", ("Description", "Math", "Values", "Aggregated"))
-
-
-class ReportFormatEnum(Enum):
-    jpg = "jpeg"
-    html = "html"
-    pdf = "pdf"
-    svg = "svg"
-    png = "png"
-    jpeg = "jpeg"
-    gif = "gif"
-    tiff = "tiff"
-    bmp = "bmp"
-    svg_inline = "svg_inline"
-    png_inline = "png_inline"
-    jpeg_inline = "jpeg_inline"
-    gif_inline = "gif_inline"
-    tiff_inline = "tiff_inline"
-    bmp_inline = "bmp_inline"
 
 
 def generate_math_html(equation: str = "e^x", inline: bool = True, html_classes: str = "math_span") -> str:
@@ -80,7 +62,7 @@ def plt_html(
     fig: Figure = None,
     *,
     title: str = "image",
-    report_format: ReportFormatEnum = "png",
+    report_format: ReportFormatEnum = ReportFormatEnum.png,
     size: Tuple[int, int] = (400, 400),
     dpi: int = 100,
 ) -> str:
