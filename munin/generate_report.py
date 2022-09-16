@@ -19,7 +19,7 @@ from pathlib import Path
 
 import jinja2
 import numpy
-from apppath import ensure_existence
+from warg import ensure_existence
 from draugr.visualisation import confusion_matrix_plot, roc_plot
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer

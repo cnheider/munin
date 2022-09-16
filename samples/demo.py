@@ -11,7 +11,7 @@ Created on 27/04/2019
 from pathlib import Path
 
 import numpy
-from apppath import ensure_existence
+from warg import ensure_existence
 from draugr.visualisation import confusion_matrix_plot, roc_plot
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
