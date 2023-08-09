@@ -19,12 +19,11 @@ from pathlib import Path
 
 import jinja2
 import numpy
-from warg import ensure_existence
+from warg import ensure_existence, drop_unused_kws, passes_kws_to
 from draugr.visualisation import confusion_matrix_plot, roc_plot
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import LabelBinarizer
 from sorcery import dict_of
-from warg import drop_unused_kws, passes_kws_to
 from munin.report_format import ReportFormatEnum
 from munin.html_embeddings import MetricEntry, plt_html, plt_html_svg
 from munin.plugins.dynamic.cf import generate_metric_table
@@ -197,12 +196,22 @@ if __name__ == "__main__":
         metric_fields = ("Metric", *MetricEntry._fields)
 
         roc_figure = plt_html(
-            roc_plot(y_pred, y_test, n_classes), report_format=ReportFormatEnum.png, size=(800, 800)
+            roc_plot(y_pred, y_test, n_classes),
+            report_format=ReportFormatEnum.png,
+            size=(800, 800),
         )
 
         model_name = "BestNet"
         bundle = NOD(
-            dict_of(title, model_name, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+            dict_of(
+                title,
+                model_name,
+                confusion_matrix,
+                metric_fields,
+                metrics,
+                predictions,
+                roc_figure,
+            )
         )
 
         generate_html(file_name, **bundle)

@@ -45,7 +45,9 @@ def test_generation(do_generate_pdf=False):
 
     b = ReportEntry(
         name=2,
-        figure=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
+        figure=plt_html(
+            report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)
+        ),
         prediction="b",
         truth="c",
         outcome="fp",
@@ -65,7 +67,9 @@ def test_generation(do_generate_pdf=False):
 
     d = ReportEntry(
         name="fas3",
-        figure=plt_html(report_format=ReportFormatEnum.jpg, size=(cell_width, cell_width)),
+        figure=plt_html(
+            report_format=ReportFormatEnum.jpg, size=(cell_width, cell_width)
+        ),
         prediction="a",
         truth="a",
         outcome="tp",
@@ -74,11 +78,15 @@ def test_generation(do_generate_pdf=False):
 
     e = ReportEntry(
         name="fas3",
-        figure=plt_html(report_format=ReportFormatEnum.jpeg, size=(cell_width, cell_width)),
+        figure=plt_html(
+            report_format=ReportFormatEnum.jpeg, size=(cell_width, cell_width)
+        ),
         prediction="c",
         truth="c",
         outcome="tn",
-        explanation=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
+        explanation=plt_html(
+            report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)
+        ),
     )
 
     from sklearn import svm, datasets

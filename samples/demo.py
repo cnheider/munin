@@ -24,7 +24,10 @@ from munin.plugins.dynamic.cf import generate_metric_table
 
 
 def a(
-    title: str = "Classification Report", out_path=Path.cwd() / "exclude", num_classes=3, do_generate_pdf=True
+    title: str = "Classification Report",
+    out_path=Path.cwd() / "exclude",
+    num_classes=3,
+    do_generate_pdf=True,
 ):
     """description"""
     from matplotlib import pyplot
@@ -53,7 +56,9 @@ def a(
 
     b = ReportEntry(
         name=2,
-        figure=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
+        figure=plt_html(
+            report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)
+        ),
         prediction="b",
         truth="c",
         outcome="fp",
@@ -73,7 +78,9 @@ def a(
 
     d = ReportEntry(
         name="fas3",
-        figure=plt_html(report_format=ReportFormatEnum.jpg, size=(cell_width, cell_width)),
+        figure=plt_html(
+            report_format=ReportFormatEnum.jpg, size=(cell_width, cell_width)
+        ),
         prediction="a",
         truth="a",
         outcome="tp",
@@ -82,11 +89,15 @@ def a(
 
     e = ReportEntry(
         name="fas3",
-        figure=plt_html(report_format=ReportFormatEnum.jpeg, size=(cell_width, cell_width)),
+        figure=plt_html(
+            report_format=ReportFormatEnum.jpeg, size=(cell_width, cell_width)
+        ),
         prediction="c",
         truth="c",
         outcome="tn",
-        explanation=plt_html(report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)),
+        explanation=plt_html(
+            report_format=ReportFormatEnum.svg, size=(cell_width, cell_width)
+        ),
     )
 
     from sklearn import svm, datasets
@@ -126,13 +137,23 @@ def a(
     metric_fields = ("Metric", *MetricEntry._fields)
 
     roc_figure = plt_html(
-        roc_plot(y_pred, y_test, n_classes), report_format=ReportFormatEnum.png, size=(800, 800)
+        roc_plot(y_pred, y_test, n_classes),
+        report_format=ReportFormatEnum.png,
+        size=(800, 800),
     )
 
     model_name = "model_name"
 
     bundle = NOD(
-        dict_of(title, model_name, confusion_matrix, metric_fields, metrics, predictions, roc_figure)
+        dict_of(
+            title,
+            model_name,
+            confusion_matrix,
+            metric_fields,
+            metrics,
+            predictions,
+            roc_figure,
+        )
     )
 
     generate_html(file_name, **bundle)

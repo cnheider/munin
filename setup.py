@@ -3,7 +3,7 @@
 from typing import List, Sequence
 
 
-def python_version_check(major: int = 3, minor: int = 7):
+def python_version_check(major: int = 3, minor: int = 8) -> None:
     """description"""
     import sys
 
@@ -42,7 +42,10 @@ def read_reqs(file: str, path: Path) -> List[str]:
         """description"""
         if req_str.startswith("-r"):
             with open(base_path / req_str.strip("-r").strip()) as f:
-                return [unroll_nested_reqs(req.strip(), base_path) for req in readlines_ignore_comments(f)]
+                return [
+                    unroll_nested_reqs(req.strip(), base_path)
+                    for req in readlines_ignore_comments(f)
+                ]
         else:
             return (req_str,)
 
@@ -51,7 +54,9 @@ def read_reqs(file: str, path: Path) -> List[str]:
         requirements = readlines_ignore_comments(f)
         for requirement in requirements:
             requirements_group.extend(
-                recursive_flatten_ignore_str(unroll_nested_reqs(requirement.strip(), path))
+                recursive_flatten_ignore_str(
+                    unroll_nested_reqs(requirement.strip(), path)
+                )
             )
 
     req_set = set(requirements_group)
@@ -68,7 +73,9 @@ with open(Path(__file__).parent / "munin" / "__init__.py", "r") as project_init_
     # get version string from module
     version = re.search(r"__version__ = ['\"]([^'\"]*)['\"]", content, re.M).group(1)
 
-    project_name = re.search(r"__project__ = ['\"]([^'\"]*)['\"]", content, re.M).group(1)
+    project_name = re.search(r"__project__ = ['\"]([^'\"]*)['\"]", content, re.M).group(
+        1
+    )
     author = re.search(r"__author__ = ['\"]([^'\"]*)['\"]", content, re.M).group(
         1
     )  # get version string from module
@@ -78,12 +85,16 @@ __author__ = author
 class MuninPackage:
     @property
     def test_dependencies(self) -> list:
-        return read_reqs("requirements_tests.txt", Path(__file__).parent / "requirements")
+        return read_reqs(
+            "requirements_tests.txt", Path(__file__).parent / "requirements"
+        )
 
     @property
     def setup_dependencies(self) -> list:
         """description"""
-        return read_reqs("requirements_setup.txt", Path(__file__).parent / "requirements")
+        return read_reqs(
+            "requirements_setup.txt", Path(__file__).parent / "requirements"
+        )
 
     @property
     def package_name(self) -> str:
@@ -227,7 +238,6 @@ class MuninPackage:
 from setuptools import setup
 
 if __name__ == "__main__":
-
     pkg = MuninPackage()
 
     setup(
