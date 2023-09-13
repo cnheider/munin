@@ -3,3 +3,4 @@ m2r2
 sphinxcontrib-programoutput
 munin
 mistune==2.0.3
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
