@@ -3,3 +3,4 @@ m2r2
 sphinxcontrib-programoutput
 munin
 mistune==2.0.3
+numpy>=1.22.2 # not directly required, pinned by Snyk to avoid a vulnerability
